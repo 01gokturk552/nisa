@@ -1,196 +1,162 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Özür Dilerim</title>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Özür Dilerim</title>
 
-  <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+<style>
+* {margin:0; padding:0; box-sizing:border-box;}
 
-    body {
-      height: 100vh;
-      font-family: Arial, sans-serif;
-      background: #fff;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      overflow: hidden;
-    }
+body {
+  height:100vh;
+  font-family: Arial, sans-serif;
+  overflow:hidden;
+  background:black;
+}
 
-    /* ARKA PLAN FOTOĞRAFLAR */
-    .bg {
-      position: fixed;
-      inset: 0;
-      background-size: cover;
-      background-position: center;
-      opacity: 0;
-      transition: opacity 2s;
-      z-index: -1;
-    }
+/* FOTOĞRAF ARKA PLAN */
+.slideshow {
+  position:fixed;
+  inset:0;
+  z-index:1;
+}
 
-    .bg.show {
-      opacity: 0.25;
-    }
+.slide {
+  position:absolute;
+  inset:0;
+  background-size:cover;
+  background-position:center;
+  opacity:0;
+  transition:opacity 2s ease-in-out;
+}
 
-    .screen {
-      text-align: center;
-    }
+.slide.active {
+  opacity:0.35;
+}
 
-    .tap-text {
-      font-size: 22px;
-      color: #555;
-      margin-bottom: 20px;
-    }
+/* ORTA ALAN */
+.content {
+  position:relative;
+  z-index:3;
+  height:100vh;
+  display:flex;
+  flex-direction:column;
+  justify-content:center;
+  align-items:center;
+  text-align:center;
+  color:#fff;
+  background:rgba(255,255,255,0.85);
+}
 
-    button {
-      padding: 14px 32px;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      background: #e63946;
-      color: white;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(230,57,70,0.3);
-    }
+/* BUTON */
+button {
+  margin-top:20px;
+  padding:14px 36px;
+  font-size:18px;
+  border:none;
+  border-radius:30px;
+  background:#e63946;
+  color:#fff;
+  cursor:pointer;
+  box-shadow:0 8px 20px rgba(230,57,70,.3);
+}
 
-    button:active {
-      transform: scale(0.96);
-    }
+button:active {transform:scale(.95);}
 
-    /* KALP */
-    .heart-container {
-      position: relative;
-      width: min(200px, 60vw);
-      height: min(180px, 55vw);
-      margin: 0 auto;
-      display: none;
-    }
+/* KALP */
+.heart {
+  width:200px;
+  height:180px;
+  position:relative;
+  margin-bottom:20px;
+  display:none;
+}
 
-    .half {
-      position: absolute;
-      width: 50%;
-      height: 100%;
-      background: #e63946;
-      border-radius: 100% 100% 0 0;
-      top: 0;
-    }
+.heart::before,
+.heart::after {
+  content:"";
+  position:absolute;
+  width:100px;
+  height:160px;
+  background:#e63946;
+  border-radius:100px 100px 0 0;
+  top:0;
+}
 
-    .left {
-      left: 0;
-      transform: rotate(-20deg) translateX(-40px);
-      transform-origin: right bottom;
-    }
+.heart::before {
+  left:100px;
+  transform:rotate(-45deg);
+  transform-origin:0 100%;
+}
 
-    .right {
-      right: 0;
-      transform: rotate(20deg) translateX(40px);
-      transform-origin: left bottom;
-    }
+.heart::after {
+  left:0;
+  transform:rotate(45deg);
+  transform-origin:100% 100%;
+}
 
-    .merge .left {
-      animation: leftMerge 2s forwards;
-    }
+/* YAZI */
+.message {
+  font-size:clamp(18px,5vw,26px);
+  opacity:0;
+  transition:opacity 2s;
+}
 
-    .merge .right {
-      animation: rightMerge 2s forwards;
-    }
-
-    @keyframes leftMerge {
-      to { transform: rotate(-45deg) translateX(0); }
-    }
-
-    @keyframes rightMerge {
-      to { transform: rotate(45deg) translateX(0); }
-    }
-
-    .message {
-      margin-top: 25px;
-      font-size: clamp(18px, 5vw, 26px);
-      padding: 0 20px;
-      color: #333;
-      opacity: 0;
-      transition: opacity 2s;
-    }
-
-    .show {
-      opacity: 1;
-    }
-  </style>
+.show {opacity:1;}
+</style>
 </head>
 <body>
 
-  <!-- ARKA PLAN -->
-  <div class="bg" id="bg"></div>
+<!-- FOTOĞRAFLAR -->
+<div class="slideshow">
+  <div class="slide" style="background-image:url('foto1.jpg')"></div>
+  <div class="slide" style="background-image:url('foto2.jpg')"></div>
+  <div class="slide" style="background-image:url('foto3.jpg')"></div>
+</div>
 
-  <!-- MÜZİK -->
-  <audio id="bgMusic" src="derdim.mp3"></audio>
+<!-- MÜZİK -->
+<audio id="music" src="derdim.mp3"></audio>
 
-  <!-- BAŞLANGIÇ -->
-  <div class="screen" id="startScreen">
-    <div class="tap-text">Lütfen ekrana dokunun</div>
-    <button onclick="startAnimation()">Başlat ❤️</button>
-  </div>
+<!-- İÇERİK -->
+<div class="content" id="startScreen">
+  <div style="font-size:22px;color:#555;">Lütfen ekrana dokunun</div>
+  <button onclick="start()">Başlat ❤️</button>
+</div>
 
-  <!-- ANİMASYON -->
-  <div class="screen" id="animationScreen" style="display:none;">
-    <div class="heart-container" id="heart">
-      <div class="half left"></div>
-      <div class="half right"></div>
-    </div>
-    <div class="message" id="message">
-      Özür dilerim… Seni kırmak istememiştim ❤️
-    </div>
-  </div>
+<div class="content" id="main" style="display:none;">
+  <div class="heart" id="heart"></div>
+  <div class="message" id="msg">Özür dilerim… Seni kırmak istememiştim ❤️</div>
+</div>
 
-  <script>
-    const photos = [
-      "foto1.jpg",
-      "foto2.jpg",
-      "foto3.jpg"
-    ];
+<script>
+const slides = document.querySelectorAll(".slide");
+let index = 0;
 
-    let photoIndex = 0;
-    const bg = document.getElementById("bg");
+function startSlideshow(){
+  slides[0].classList.add("active");
+  setInterval(()=>{
+    slides[index].classList.remove("active");
+    index = (index + 1) % slides.length;
+    slides[index].classList.add("active");
+  },5000);
+}
 
-    function startBackground() {
-      bg.style.backgroundImage = `url('${photos[photoIndex]}')`;
-      bg.classList.add("show");
+function start(){
+  document.getElementById("startScreen").style.display="none";
+  document.getElementById("main").style.display="flex";
 
-      setInterval(() => {
-        bg.classList.remove("show");
-        setTimeout(() => {
-          photoIndex = (photoIndex + 1) % photos.length;
-          bg.style.backgroundImage = `url('${photos[photoIndex]}')`;
-          bg.classList.add("show");
-        }, 2000);
-      }, 6000);
-    }
+  document.getElementById("heart").style.display="block";
+  document.getElementById("music").volume=0.6;
+  document.getElementById("music").play().catch(()=>{});
 
-    function startAnimation() {
-      document.getElementById("startScreen").style.display = "none";
-      document.getElementById("animationScreen").style.display = "block";
+  setTimeout(()=>{
+    document.getElementById("msg").classList.add("show");
+  },1500);
 
-      const heart = document.getElementById("heart");
-      const message = document.getElementById("message");
-      const music = document.getElementById("bgMusic");
-
-      heart.style.display = "block";
-
-      music.volume = 0.6;
-      music.play().catch(() => {});
-
-      setTimeout(() => {
-        heart.classList.add("merge");
-      }, 300);
-
-      setTimeout(() => {
-        message.classList.add("show");
-      }, 2300);
-
-      startBackground();
-    }
-  </script>
+  startSlideshow();
+}
+</script>
 
 </body>
 </html>
