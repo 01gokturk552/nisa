@@ -3,160 +3,164 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Özür Dilerim</title>
+<title>Bizim Hikâyemiz</title>
 
 <style>
-* {margin:0; padding:0; box-sizing:border-box;}
-
-body {
-  height:100vh;
-  font-family: Arial, sans-serif;
-  overflow:hidden;
-  background:black;
+*{margin:0;padding:0;box-sizing:border-box;}
+body{
+  font-family:Arial, sans-serif;
+  background:#fff;
+  color:#333;
 }
-
-/* FOTOĞRAF ARKA PLAN */
-.slideshow {
-  position:fixed;
-  inset:0;
-  z-index:1;
-}
-
-.slide {
-  position:absolute;
-  inset:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 2s ease-in-out;
-}
-
-.slide.active {
-  opacity:0.35;
-}
-
-/* ORTA ALAN */
-.content {
-  position:relative;
-  z-index:3;
-  height:100vh;
+section{
+  min-height:100vh;
   display:flex;
   flex-direction:column;
   justify-content:center;
   align-items:center;
+  padding:40px 20px;
   text-align:center;
-  color:#fff;
-  background:rgba(255,255,255,0.85);
 }
-
-/* BUTON */
-button {
-  margin-top:20px;
-  padding:14px 36px;
-  font-size:18px;
+button{
+  padding:12px 28px;
   border:none;
   border-radius:30px;
   background:#e63946;
   color:#fff;
+  font-size:16px;
   cursor:pointer;
-  box-shadow:0 8px 20px rgba(230,57,70,.3);
 }
-
-button:active {transform:scale(.95);}
+button:active{transform:scale(.96);}
+.hidden{display:none;}
 
 /* KALP */
-.heart {
-  width:200px;
-  height:180px;
-  position:relative;
-  margin-bottom:20px;
-  display:none;
+.heart{
+  width:160px;height:140px;position:relative;margin:20px 0;
+}
+.heart:before,.heart:after{
+  content:"";position:absolute;width:80px;height:120px;
+  background:#e63946;border-radius:80px 80px 0 0;top:0;
+}
+.heart:before{left:80px;transform:rotate(-45deg);transform-origin:0 100%;}
+.heart:after{left:0;transform:rotate(45deg);transform-origin:100% 100%;}
+
+/* GALERİ */
+.gallery{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(120px,1fr));
+  gap:10px;
+  width:100%;
+  max-width:900px;
+  margin-top:30px;
+}
+.gallery img{
+  width:100%;
+  border-radius:10px;
+  object-fit:cover;
 }
 
-.heart::before,
-.heart::after {
-  content:"";
-  position:absolute;
-  width:100px;
-  height:160px;
-  background:#e63946;
-  border-radius:100px 100px 0 0;
-  top:0;
+/* ZAMAN KAPSÜLÜ */
+textarea{
+  width:100%;
+  max-width:500px;
+  height:120px;
+  padding:12px;
+  border-radius:10px;
+  border:1px solid #ccc;
+  resize:none;
 }
-
-.heart::before {
-  left:100px;
-  transform:rotate(-45deg);
-  transform-origin:0 100%;
-}
-
-.heart::after {
-  left:0;
-  transform:rotate(45deg);
-  transform-origin:100% 100%;
-}
-
-/* YAZI */
-.message {
-  font-size:clamp(18px,5vw,26px);
-  opacity:0;
-  transition:opacity 2s;
-}
-
-.show {opacity:1;}
 </style>
 </head>
 <body>
 
-<!-- FOTOĞRAFLAR -->
-<div class="slideshow">
-  <div class="slide" style="background-image:url('foto1.jpg')"></div>
-  <div class="slide" style="background-image:url('foto2.jpg')"></div>
-</div>
+<!-- BAŞLANGIÇ -->
+<section id="start">
+  <h2>Lütfen ekrana dokunun</h2>
+  <button onclick="start()">Başlat ❤️</button>
+</section>
 
-<!-- MÜZİK -->
+<!-- ANA -->
+<section id="main" class="hidden">
+  <div class="heart"></div>
+  <h2>Özür dilerim…</h2>
+  <p>Seni kırmak istememiştim ❤️</p>
+</section>
+
+<!-- GALERİ -->
+<section id="gallerySection" class="hidden">
+  <h2>Bizim Anılarımız 📸</h2>
+  <div class="gallery" id="gallery"></div>
+</section>
+
+<!-- ZAMAN KAPSÜLÜ -->
+<section id="capsuleSection" class="hidden">
+  <h2>1 Ay Sonra Açılacak Mesaj ⏳</h2>
+  <div id="capsuleContent"></div>
+</section>
+
 <audio id="music" src="derdim.mp3"></audio>
 
-<!-- İÇERİK -->
-<div class="content" id="startScreen">
-  <div style="font-size:22px;color:#555;">Lütfen ekrana dokunun</div>
-  <button onclick="start()">Başlat ❤️</button>
-</div>
-
-<div class="content" id="main" style="display:none;">
-  <div class="heart" id="heart"></div>
-  <div class="message" id="msg">Özür dilerim… Seni kırmak istememiştim ❤️</div>
-</div>
-
 <script>
-const slides = document.querySelectorAll(".slide");
-let index = 0;
+/* BAŞLAT */
+function start(){
+  document.getElementById("start").classList.add("hidden");
+  document.getElementById("main").classList.remove("hidden");
+  document.getElementById("gallerySection").classList.remove("hidden");
+  document.getElementById("capsuleSection").classList.remove("hidden");
 
-function startSlideshow(){
-  slides[0].classList.add("active");
-  setInterval(()=>{
-    slides[index].classList.remove("active");
-    index = (index + 1) % slides.length;
-    slides[index].classList.add("active");
-  },5000);
+  const music=document.getElementById("music");
+  music.volume=0.6;
+  music.play().catch(()=>{});
+
+  loadGallery();
+  loadCapsule();
 }
 
-function start(){
-  document.getElementById("startScreen").style.display="none";
-  document.getElementById("main").style.display="flex";
+/* GALERİ (kod değiştirmeden foto ekleme) */
+function loadGallery(){
+  const gallery=document.getElementById("gallery");
+  let i=1;
+  function tryLoad(){
+    const img=new Image();
+    img.src=`gallery/${i}.jpg`;
+    img.onload=()=>{
+      gallery.appendChild(img);
+      i++;
+      tryLoad();
+    };
+  }
+  tryLoad();
+}
 
-  document.getElementById("heart").style.display="block";
-  document.getElementById("music").volume=0.6;
-  document.getElementById("music").play().catch(()=>{});
+/* ZAMAN KAPSÜLÜ */
+function loadCapsule(){
+  const box=document.getElementById("capsuleContent");
+  const saved=localStorage.getItem("capsuleMessage");
+  const date=localStorage.getItem("capsuleDate");
 
-  setTimeout(()=>{
-    document.getElementById("msg").classList.add("show");
-  },1500);
+  if(!saved){
+    box.innerHTML=`
+      <textarea id="capsuleText" placeholder="1 ay sonra okunacak mesaj..."></textarea><br><br>
+      <button onclick="saveCapsule()">Kilitle 🔒</button>
+    `;
+  }else{
+    const diff=(Date.now()-Number(date))/(1000*60*60*24);
+    if(diff<30){
+      box.innerHTML=`<p>Mesaj kilitli…<br>${Math.ceil(30-diff)} gün kaldı ⏳</p>`;
+    }else{
+      box.innerHTML=`<p>${saved}</p>`;
+    }
+  }
+}
 
-  startSlideshow();
+function saveCapsule(){
+  const text=document.getElementById("capsuleText").value.trim();
+  if(!text) return;
+  localStorage.setItem("capsuleMessage",text);
+  localStorage.setItem("capsuleDate",Date.now());
+  loadCapsule();
 }
 </script>
 
 </body>
 </html>
-
