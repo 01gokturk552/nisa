@@ -22,9 +22,11 @@
     }
 
     .tap-text {
-      font-size: 22px;
+      font-size: clamp(18px, 5vw, 24px);
       color: #555;
       animation: blink 1.5s infinite;
+      padding: 0 20px;
+      text-align: center;
     }
 
     @keyframes blink {
@@ -34,19 +36,19 @@
 
     .heart-container {
       position: relative;
-      width: 200px;
-      height: 180px;
+      width: min(200px, 60vw);
+      height: min(180px, 55vw);
       margin: 0 auto;
       display: none;
     }
 
     .half {
       position: absolute;
-      width: 100px;
-      height: 160px;
+      width: 50%;
+      height: 100%;
       background: #e63946;
-      border-radius: 100px 100px 0 0;
-      top: 20px;
+      border-radius: 100% 100% 0 0;
+      top: 0;
     }
 
     .left {
@@ -91,6 +93,11 @@
 
     .message.show {
       opacity: 1;
+    }
+  @media (max-width: 480px) {
+      body {
+        padding: 10px;
+      }
     }
   </style>
 </head>
