@@ -150,7 +150,14 @@
       }, 2300);
     }
 
-    document.body.addEventListener('click', startAnimation, { once: true });
+    // Tüm cihazlar için güvenli tetikleyici
+    function bindEvents() {
+      document.addEventListener('click', startAnimation, { once: true });
+      document.addEventListener('touchstart', startAnimation, { once: true });
+      document.addEventListener('keydown', startAnimation, { once: true });
+    }
+
+    bindEvents();
     document.body.addEventListener('touchstart', startAnimation, { once: true });
   </script>
 
