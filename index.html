@@ -172,6 +172,7 @@
     const bgMusic = document.getElementById('bgMusic');
 
     function startAnimation() {
+      startBackground();
       startScreen.style.display = 'none';
       animationScreen.style.display = 'block';
       heart.style.display = 'block';
@@ -197,6 +198,7 @@
     // Tüm cihazlar için güvenli tetikleyici
     // Inline onclick kullanıldı, ekstra event yok
 
+    
         const photos = [
       "foto1.jpg",
       "foto2.jpg",
@@ -219,3 +221,4 @@
         }, 2000);
       }, 6000);
     }
+
