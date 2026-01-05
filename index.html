@@ -2,21 +2,23 @@
 <html lang="tr">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Özür Dilerim</title>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
     body {
       height: 100vh;
-      background: #ffffff;
+      font-family: Arial, sans-serif;
+      background: #fff;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: Arial, sans-serif;
       overflow: hidden;
-      position: relative;
     }
 
+    /* ARKA PLAN FOTOĞRAFLAR */
     .bg {
       position: fixed;
       inset: 0;
@@ -36,18 +38,27 @@
     }
 
     .tap-text {
-      font-size: clamp(18px, 5vw, 24px);
+      font-size: 22px;
       color: #555;
-      animation: blink 1.5s infinite;
-      padding: 0 20px;
-      text-align: center;
+      margin-bottom: 20px;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    button {
+      padding: 14px 32px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background: #e63946;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(230,57,70,0.3);
     }
 
+    button:active {
+      transform: scale(0.96);
+    }
+
+    /* KALP */
     .heart-container {
       position: relative;
       width: min(200px, 60vw);
@@ -67,13 +78,13 @@
 
     .left {
       left: 0;
-      transform: rotate(-45deg) translateX(0);
+      transform: rotate(-20deg) translateX(-40px);
       transform-origin: right bottom;
     }
 
     .right {
       right: 0;
-      transform: rotate(45deg) translateX(0);
+      transform: rotate(20deg) translateX(40px);
       transform-origin: left bottom;
     }
 
@@ -86,126 +97,61 @@
     }
 
     @keyframes leftMerge {
-      from {
-        transform: rotate(-20deg) translateX(-40px);
-      }
-      to {
-        transform: rotate(-45deg) translateX(0);
-      }
-    }
+      to { transform: rotate(-45deg) translateX(0); }
     }
 
     @keyframes rightMerge {
-      from {
-        transform: rotate(20deg) translateX(40px);
-      }
-      to {
-        transform: rotate(45deg) translateX(0);
-      }
-    }
+      to { transform: rotate(45deg) translateX(0); }
     }
 
     .message {
-      margin-top: 30px;
+      margin-top: 25px;
       font-size: clamp(18px, 5vw, 26px);
       padding: 0 20px;
       color: #333;
       opacity: 0;
       transition: opacity 2s;
-      text-align: center;
     }
 
-    .message.show {
+    .show {
       opacity: 1;
     }
-  @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-    }
-  #startBtn {
-      margin-top: 20px;
-      padding: 14px 28px;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      background: #e63946;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(230,57,70,0.3);
-    }
-
-    #startBtn:active {
-      transform: scale(0.96);
-    }
-
   </style>
 </head>
 <body>
-  <!-- Arka plan fotoğrafları -->
+
+  <!-- ARKA PLAN -->
   <div class="bg" id="bg"></div>
 
-  <!-- Arka Plan Müziği (Mobil uyumlu – dokunma sonrası başlar)
-       Not: Aynı klasöre 'derdim.mp3' dosyasını eklemelisin -->
-  <audio id="bgMusic" src="derdim.mp3" preload="auto"></audio>
+  <!-- MÜZİK -->
+  <audio id="bgMusic" src="derdim.mp3"></audio>
 
-
+  <!-- BAŞLANGIÇ -->
   <div class="screen" id="startScreen">
     <div class="tap-text">Lütfen ekrana dokunun</div>
-    <button id="startBtn" onclick="startAnimation()">Başlat ❤️</button>
-  </div>
+    <button onclick="startAnimation()">Başlat ❤️</button>
   </div>
 
+  <!-- ANİMASYON -->
   <div class="screen" id="animationScreen" style="display:none;">
     <div class="heart-container" id="heart">
       <div class="half left"></div>
       <div class="half right"></div>
     </div>
-    <div class="message" id="message">Özür dilerim… Seni kırmak istememiştim ❤️</div>
+    <div class="message" id="message">
+      Özür dilerim… Seni kırmak istememiştim ❤️
+    </div>
   </div>
 
   <script>
-    const startScreen = document.getElementById('startScreen');
-    const animationScreen = document.getElementById('animationScreen');
-    const heart = document.getElementById('heart');
-    const message = document.getElementById('message');
-    const bgMusic = document.getElementById('bgMusic');
-
-    function startAnimation() {
-      startBackground();
-      startScreen.style.display = 'none';
-      animationScreen.style.display = 'block';
-      heart.style.display = 'block';
-
-      // Müzik (mobil tarayıcılar için kullanıcı etkileşimi sonrası)
-      bgMusic.volume = 0.6;
-      bgMusic.play().catch(() => {});
-
-      setTimeout(() => {
-        heart.classList.add('merge');
-      }, 300);
-
-      setTimeout(() => {
-        message.classList.add('show');
-      }, 2300);
-    }, 300);
-
-      setTimeout(() => {
-        message.classList.add('show');
-      }, 2300);
-    }
-
-    // Tüm cihazlar için güvenli tetikleyici
-    // Inline onclick kullanıldı, ekstra event yok
-
-    
-        const photos = [
+    const photos = [
       "foto1.jpg",
       "foto2.jpg",
+      "foto3.jpg"
     ];
 
-    const bg = document.getElementById("bg");
     let photoIndex = 0;
+    const bg = document.getElementById("bg");
 
     function startBackground() {
       bg.style.backgroundImage = `url('${photos[photoIndex]}')`;
@@ -213,7 +159,6 @@
 
       setInterval(() => {
         bg.classList.remove("show");
-
         setTimeout(() => {
           photoIndex = (photoIndex + 1) % photos.length;
           bg.style.backgroundImage = `url('${photos[photoIndex]}')`;
@@ -222,3 +167,30 @@
       }, 6000);
     }
 
+    function startAnimation() {
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("animationScreen").style.display = "block";
+
+      const heart = document.getElementById("heart");
+      const message = document.getElementById("message");
+      const music = document.getElementById("bgMusic");
+
+      heart.style.display = "block";
+
+      music.volume = 0.6;
+      music.play().catch(() => {});
+
+      setTimeout(() => {
+        heart.classList.add("merge");
+      }, 300);
+
+      setTimeout(() => {
+        message.classList.add("show");
+      }, 2300);
+
+      startBackground();
+    }
+  </script>
+
+</body>
+</html>
