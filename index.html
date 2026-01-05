@@ -99,6 +99,22 @@
         padding: 10px;
       }
     }
+  #startBtn {
+      margin-top: 20px;
+      padding: 14px 28px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background: #e63946;
+      color: #fff;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(230,57,70,0.3);
+    }
+
+    #startBtn:active {
+      transform: scale(0.96);
+    }
+
   </style>
 </head>
 <body>
@@ -110,6 +126,8 @@
 
   <div class="screen" id="startScreen">
     <div class="tap-text">Lütfen ekrana dokunun</div>
+    <button id="startBtn">Başlat ❤️</button>
+  </div>
   </div>
 
   <div class="screen" id="animationScreen" style="display:none;">
@@ -151,13 +169,10 @@
     }
 
     // Tüm cihazlar için güvenli tetikleyici
-    function bindEvents() {
-      document.addEventListener('click', startAnimation, { once: true });
-      document.addEventListener('touchstart', startAnimation, { once: true });
-      document.addEventListener('keydown', startAnimation, { once: true });
-    }
-
-    bindEvents();
+    // Sadece BUTON ile başlat (en sorunsuz yöntem)
+    const startBtn = document.getElementById('startBtn');
+    startBtn.addEventListener('click', startAnimation);
+    startBtn.addEventListener('touchstart', startAnimation);
     document.body.addEventListener('touchstart', startAnimation, { once: true });
   </script>
 
