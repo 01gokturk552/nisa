@@ -1,20 +1,25 @@
 <!DOCTYPE html>
 <html lang="tr">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Özür Dilerim</title>
+
   <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       height: 100vh;
-      background: #ffffff;
+      background: white;
       display: flex;
       justify-content: center;
       align-items: center;
-      font-family: 'Arial', sans-serif;
+      font-family: Arial, sans-serif;
       overflow: hidden;
-      -webkit-tap-highlight-color: transparent;
     }
 
     .screen {
@@ -22,16 +27,24 @@
     }
 
     .tap-text {
-      font-size: clamp(18px, 5vw, 24px);
+      font-size: 22px;
       color: #555;
-      animation: blink 1.5s infinite;
-      padding: 0 20px;
-      text-align: center;
+      margin-bottom: 20px;
     }
 
-    @keyframes blink {
-      0%, 100% { opacity: 1; }
-      50% { opacity: 0.3; }
+    button {
+      padding: 14px 30px;
+      font-size: 18px;
+      border: none;
+      border-radius: 30px;
+      background: #e63946;
+      color: white;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(230,57,70,0.3);
+    }
+
+    button:active {
+      transform: scale(0.96);
     }
 
     .heart-container {
@@ -82,98 +95,63 @@
     }
 
     .message {
-      margin-top: 30px;
+      margin-top: 25px;
       font-size: clamp(18px, 5vw, 26px);
       padding: 0 20px;
       color: #333;
       opacity: 0;
       transition: opacity 2s;
-      text-align: center;
     }
 
-    .message.show {
+    .show {
       opacity: 1;
     }
-  @media (max-width: 480px) {
-      body {
-        padding: 10px;
-      }
-    }
-  #startBtn {
-      margin-top: 20px;
-      padding: 14px 28px;
-      font-size: 18px;
-      border: none;
-      border-radius: 30px;
-      background: #e63946;
-      color: #fff;
-      cursor: pointer;
-      box-shadow: 0 8px 20px rgba(230,57,70,0.3);
-    }
-
-    #startBtn:active {
-      transform: scale(0.96);
-    }
-
   </style>
 </head>
 <body>
 
-  <!-- Arka Plan Müziği (Mobil uyumlu – dokunma sonrası başlar)
-       Not: Aynı klasöre 'derdim.mp3' dosyasını eklemelisin -->
-  <audio id="bgMusic" src="derdim.mp3" preload="auto"></audio>
+  <!-- Müzik -->
+  <audio id="bgMusic" src="derdim.mp3"></audio>
 
-
+  <!-- Başlangıç -->
   <div class="screen" id="startScreen">
     <div class="tap-text">Lütfen ekrana dokunun</div>
-    <button id="startBtn">Başlat ❤️</button>
-  </div>
+    <button onclick="startAnimation()">Başlat ❤️</button>
   </div>
 
+  <!-- Animasyon -->
   <div class="screen" id="animationScreen" style="display:none;">
     <div class="heart-container" id="heart">
       <div class="half left"></div>
       <div class="half right"></div>
     </div>
-    <div class="message" id="message">Özür dilerim… Seni kırmak istememiştim ❤️</div>
+    <div class="message" id="message">
+      Özür dilerim… Seni kırmak istememiştim ❤️
+    </div>
   </div>
 
   <script>
-    const startScreen = document.getElementById('startScreen');
-    const animationScreen = document.getElementById('animationScreen');
-    const heart = document.getElementById('heart');
-    const message = document.getElementById('message');
-    const bgMusic = document.getElementById('bgMusic');
-
     function startAnimation() {
-      startScreen.style.display = 'none';
-      animationScreen.style.display = 'block';
-      heart.style.display = 'block';
+      document.getElementById("startScreen").style.display = "none";
+      document.getElementById("animationScreen").style.display = "block";
 
-      // Müzik (mobil tarayıcılar için kullanıcı etkileşimi sonrası)
-      bgMusic.volume = 0.6;
-      bgMusic.play().catch(() => {});
+      const heart = document.getElementById("heart");
+      const message = document.getElementById("message");
+      const music = document.getElementById("bgMusic");
+
+      heart.style.display = "block";
+
+      music.volume = 0.6;
+      music.play().catch(() => {});
 
       setTimeout(() => {
-        heart.classList.add('merge');
+        heart.classList.add("merge");
       }, 300);
 
       setTimeout(() => {
-        message.classList.add('show');
-      }, 2300);
-    }, 300);
-
-      setTimeout(() => {
-        message.classList.add('show');
+        message.classList.add("show");
       }, 2300);
     }
-
-    // Tüm cihazlar için güvenli tetikleyici
-    // Sadece BUTON ile başlat (en sorunsuz yöntem)
-    const startBtn = document.getElementById('startBtn');
-    startBtn.addEventListener('click', startAnimation);
-    startBtn.addEventListener('touchstart', startAnimation);
-    document.body.addEventListener('touchstart', startAnimation, { once: true });
   </script>
 
 </body>
